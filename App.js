@@ -1,12 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import BadgesStack from './src/components/badgesScreen/BadgesStack';
+import AppStack from './src/components/AppNavigator/AppStack';
 
 
 const App = () => {
   return (
     <NavigationContainer>
-      <BadgesStack></BadgesStack>
+      <AppStack/>
     </NavigationContainer>
   );
 };
