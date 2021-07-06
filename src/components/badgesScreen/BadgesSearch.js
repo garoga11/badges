@@ -34,7 +34,7 @@ class BadgesSearch extends React.Component {
 const styles = StyleSheet.create({
     container:{
         width:'95%',
-        marginTop:10,/*45 */
+        marginTop:45,
         color: Colors.white
     },
     TextInput:{

@@ -13,7 +13,7 @@ const BadgesStack = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        /*headerShown: false,*/
+        headerShown: false,
         headerStyle: {
           backgroundColor: Colors.blackPearl,
           shadowColor: Colors.blackPearl,
