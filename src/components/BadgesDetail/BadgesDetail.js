@@ -1,10 +1,12 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import Colors from '../res/Colors';
+import Storage from '../libs/storage';
 
 class BadgesDetail extends React.Component {
   state = {
     badge: {},
+    isFavorite: false,
   };
 
   componentDidMount() {
@@ -13,12 +15,51 @@ class BadgesDetail extends React.Component {
 
   getBadge = () => {
     const {item} = this.props.route.params;
-    this.setState({badge: item});
+    this.setState({badge: item}, () => {
+      this.getFavorite();
+    });
     this.props.navigation.setOptions({title: item.name});
   };
 
+  getFavorite = async () => {
+    try {
+      const key = `favorite-${this.state.badge._id}`;
+      const favoriteStr = await Storage.instance.get(key);
+      if (favoriteStr != null) {
+        this.setState({isFavorite: true});
+      }
+    } catch (err) {
+      console.log('Get favorite err', err);
+    }
+  };
+
+  toggleFavorite = () => {
+    if (this.state.isFavorite) {
+      this.removeFavorite();
+    } else {
+      this.addFavorite();
+    }
+  };
+
+  addFavorite = async () => {
+    const badge = JSON.stringify(this.state.badge);
+    const key = `favorite-${this.state.badge._id}`;
+
+    const stored = await Storage.instance.store(key, badge);
+
+    if (stored) {
+      this.setState({isFavorite: true});
+    }
+  };
+
+  removeFavorite = async () => {
+    const key = 'favorite-${this.state.badge._id}';
+    await Storage.instance.remove(key);
+    this.setState({isFavorite: false});
+  };
+
   render() {
-    const {badge} = this.state;
+    const {badge, isFavorite} = this.state;
     return (
       <View style={styles.container}>
         <View style={styles.badge}>
@@ -30,6 +71,17 @@ class BadgesDetail extends React.Component {
             style={styles.profileImage}
             source={{uri: `${badge.profile_picture_url}`}}
           />
+          <TouchableOpacity
+            style={styles.favorite}
+            onPress={this.toggleFavorite}>
+            <Image
+              source={
+                isFavorite
+                  ? require('../../assets/isFavorite.png')
+                  : require('../../assets/notFavorite.png')
+              }
+            />
+          </TouchableOpacity>
           <View style={styles.userInfo}>
             <Text style={styles.name}>{badge.name}</Text>
             <Text style={styles.age}>{badge.age}</Text>
@@ -37,15 +89,15 @@ class BadgesDetail extends React.Component {
           <Text style={styles.city}>{badge.city}</Text>
           <View style={styles.data}>
             <View style={styles.dataColumns}>
-              <Text style={styles.dataInfo}>{badge.followers || "0"} </Text>
+              <Text style={styles.dataInfo}>{badge.followers || '0'} </Text>
               <Text style={styles.smallText}>Followers</Text>
             </View>
             <View style={styles.dataColumns}>
-              <Text style={styles.dataInfo}>{badge.likes || "0"} </Text>
+              <Text style={styles.dataInfo}>{badge.likes || '0'} </Text>
               <Text style={styles.smallText}>Likes</Text>
             </View>
             <View style={styles.dataColumns}>
-              <Text style={styles.dataInfo}>{badge.posts || "0"} </Text>
+              <Text style={styles.dataInfo}>{badge.posts || '0'} </Text>
               <Text style={styles.smallText}>Posts</Text>
             </View>
           </View>
@@ -63,7 +115,7 @@ const styles = StyleSheet.create({
   badge: {
     flex: 1,
     margin: 20,
-    marginTop:45,
+    marginTop: 45,
     width: '90%',
     height: '90%',
     backgroundColor: Colors.white,
@@ -86,6 +138,13 @@ const styles = StyleSheet.create({
     top: 170,
     left: '21%',
   },
+
+  favorite: {
+    position: 'absolute',
+    top: 425,
+    right: 40,
+  },
+
   userInfo: {
     flexDirection: 'row',
     marginTop: 140,
@@ -96,40 +155,40 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: Colors.blackPearl,
   },
-  age:{
+  age: {
     fontSize: 28,
     marginLeft: 20,
     color: Colors.zirccon,
   },
-  city:{
-    marginTop:10,
-    fontSize:18,
-    textAlign:'center',
-    color: Colors.zirccon
+  city: {
+    marginTop: 10,
+    fontSize: 18,
+    textAlign: 'center',
+    color: Colors.zirccon,
   },
-  data:{
-    padding:20,
-    marginTop:50,
-    justifyContent:'center',
-    flexDirection:'row',
-    borderTopWidth:1,
-    borderColor: Colors.zirccon
+  data: {
+    padding: 20,
+    marginTop: 50,
+    justifyContent: 'center',
+    flexDirection: 'row',
+    borderTopWidth: 1,
+    borderColor: Colors.zirccon,
   },
-  dataColumns:{
-    flexDirection:'column',
-    justifyContent:'center',
-    alignItems: 'center'
+  dataColumns: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  dataInfo:{
-    marginTop:'5%',
-    fontSize:28,
+  dataInfo: {
+    marginTop: '5%',
+    fontSize: 28,
     fontWeight: 'bold',
-    marginHorizontal:25,
-    color: Colors.charade
+    marginHorizontal: 25,
+    color: Colors.charade,
   },
-  smallText:{
-    color: Colors.zirccon
-  }
+  smallText: {
+    color: Colors.zirccon,
+  },
 });
 
 export default BadgesDetail;
