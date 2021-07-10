@@ -35,6 +35,10 @@ class Favorites extends React.Component {
     }
   };
 
+  handlePress = item =>{
+      this.props.navigation.navigate('FavoritesDetails', {item})
+  }
+
   focusEvent = () => {
     this.focusListener = this.props.navigation.addListener('focus', () => {
       this.getFavorites();
@@ -77,7 +81,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.charade,
     justifyContent: 'space-around',
     alignItems: 'center',
-    paddingTop: 40,
   },
   loader: {
     height: '100%',
