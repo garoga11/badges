@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs'
 import BadgesStack from './BadgesStack';
 import Colors from '../res/Colors';
-import Color from 'color';
+import FavoriteStack from '../Favorites/FavoritesStack';
 
 const Tabs = createMaterialTopTabNavigator();
 
@@ -34,8 +34,8 @@ const BadgesTabNavigator = () => {
       />
 
       <Tabs.Screen
-        name="Badges1"
-        component={BadgesStack}
+        name="Favorites"
+        component={FavoriteStack}
         options={{
           tabBarIcon: ({size, color}) => (
             <Image
@@ -46,18 +46,6 @@ const BadgesTabNavigator = () => {
         }}
       />
 
-      <Tabs.Screen
-        name="Badges2"
-        component={BadgesStack}
-        options={{
-          tabBarIcon: ({size, color}) => (
-            <Image
-              style={{tintColor: color, width: size, height: size}}
-              source={require('../../assets/home.png')}
-            />
-          ),
-        }}
-      />
     </Tabs.Navigator>
   );
 };
