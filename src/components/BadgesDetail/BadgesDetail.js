@@ -53,7 +53,7 @@ class BadgesDetail extends React.Component {
   };
 
   removeFavorite = async () => {
-    const key = 'favorite-${this.state.badge._id}';
+    const key = `favorite-${this.state.badge._id}`;
     await Storage.instance.remove(key);
     this.setState({isFavorite: false});
   };
