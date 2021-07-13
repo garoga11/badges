@@ -14,7 +14,7 @@ class BadgesItem extends React.Component {
     const {item} = this.props;
     return (
       <View style={styles2.container}>
-        <TouchableOpacity onPress={this.props.onPress}> 
+        <TouchableOpacity onPress={this.props.onPress}>
           <View style={styles2.row}>
             <Image
               style={styles2.profile}
@@ -27,18 +27,23 @@ class BadgesItem extends React.Component {
           </View>
         </TouchableOpacity>
         <View style={styles2.icons}>
-          <Pressable onPress={this.props.onEdit}>
-            <Image
-              style={styles2.editIcon}
-              source={require('../../assets/editar.png')}
-            />
-          </Pressable>
-          <Pressable onPress={this.props.onDelete}>
-            <Image
-              style={styles2.deleteIcon}
-              source={require('../../assets/delete.png')}
-            />
-          </Pressable>
+          {this.props.onEdit ? (
+            <Pressable onPress={this.props.onEdit}>
+              <Image
+                style={styles2.editIcon}
+                source={require('../../assets/editar.png')}
+              />
+            </Pressable>
+          ) : null}
+
+          {this.props.onDelete ? (
+            <Pressable onPress={this.props.onDelete}>
+              <Image
+                style={styles2.deleteIcon}
+                source={require('../../assets/delete.png')}
+              />
+            </Pressable>
+          ) : null}
         </View>
       </View>
     );
@@ -74,25 +79,25 @@ const styles2 = StyleSheet.create({
     paddingLeft: 20,
     color: Colors.white,
   },
-  icons:{
-      flex:1,
-      alignItems:'center',
-      justifyContent: 'flex-end',
-      flexDirection: 'row'
+  icons: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
   },
-  editIcon:{
-      height:22,
-      width:22,
-      resizeMode: 'cover',
-      justifyContent: 'center'
+  editIcon: {
+    height: 22,
+    width: 22,
+    resizeMode: 'cover',
+    justifyContent: 'center',
   },
-  deleteIcon:{
-      marginLeft:15,
-      height:22,
-      width:22,
-      resizeMode: 'cover',
-      justifyContent: 'center'
-  }
+  deleteIcon: {
+    marginLeft: 15,
+    height: 22,
+    width: 22,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+  },
 });
 
 export default BadgesItem;
