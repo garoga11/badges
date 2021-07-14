@@ -9,6 +9,7 @@ import {
 import Colors from '../res/Colors';
 import Storage from '../libs/storage';
 import BadgesItem from '../badgesScreen/BadgesItem';
+import Loader from '../Generics/Loader';
 
 class Favorites extends React.Component {
   state = {
@@ -21,23 +22,22 @@ class Favorites extends React.Component {
     this.focusEvent();
   };
 
-
-
   getFavorites = async () => {
+    this.setState({loading:true, badges:undefined})
     try {
       const allKeys = await Storage.instance.getAllKeys();
       const keys = allKeys.filter(key => key.includes('favorite-'));
       const favs = await Storage.instance.multiGet(keys);
       const favorites = favs.map(fav => JSON.parse(fav[1]));
-      this.setState({badges: favorites});
+      this.setState({loading: false, badges: favorites});
     } catch (err) {
       console.log('get favorites err', err);
     }
   };
 
-  handlePress = item =>{
-      this.props.navigation.navigate('FavoritesDetails', {item})
-  }
+  handlePress = item => {
+    this.props.navigation.navigate('FavoritesDetails', {item});
+  };
 
   focusEvent = () => {
     this.focusListener = this.props.navigation.addListener('focus', () => {
@@ -53,10 +53,7 @@ class Favorites extends React.Component {
     const {badges, loading} = this.state;
 
     if (loading == true && !badges) {
-      <View style={styles.container}>
-        <StatusBar backgroundColor="transparent" translucent={true} />
-        <ActivityIndicator style={styles.loader} color="#43ff0d" size="large" />
-      </View>;
+      <Loader />;
     }
     return (
       <View style={styles.container}>

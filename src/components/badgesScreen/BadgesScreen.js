@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import Colors from '../res/Colors';
 import Http from '../libs/http';
+import Storage from '../libs/storage';
 import BadgesItem from './BadgesItem';
 import BadgesSearch from './BadgesSearch';
 
@@ -85,7 +86,9 @@ class BadgesScreen extends React.Component {
           text: 'Delete',
           onPress: async () => {
             this.setState({loading: true, badges: undefined});
-            let response = await Http.instance.remove(item._id);
+            await Http.instance.remove(item._id);
+            let key = `favorite-${item._id}`;
+            await Storage.instance.remove(key);
             this.fetchdata();
           },
           style: 'destructive',

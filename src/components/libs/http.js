@@ -1,4 +1,5 @@
 const BASE_URL = 'https://badges-api-example-gr.herokuapp.com';
+/*const BASE_URL = 'https://badges-api-239903.herokuapp.com';*/
 
 class Http {
   static instance = new Http();
