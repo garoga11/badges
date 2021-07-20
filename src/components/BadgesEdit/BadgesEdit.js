@@ -9,8 +9,8 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import Colors from '../res/Colors';
-import Http from '../libs/http';
+import Colors from '../../res/Colors';
+import Http from '../../libs/http';
 
 class BadgesEdit extends React.Component {
   state = {
