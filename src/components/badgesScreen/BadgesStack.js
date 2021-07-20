@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import BadgeLanding from '../BadgesLanding/BadgeLanding';
 import BadgesDetail from '../BadgesDetail/BadgesDetail';
 import BadgesEdit from '../BadgesEdit/BadgesEdit';
-import Colors from '../res/Colors';
+import Colors from '../../res/Colors';
 import BadgesScreen from './BadgesScreen';
 
 
