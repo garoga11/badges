@@ -8,9 +8,9 @@ import {
   StatusBar,
   FlatList,
 } from 'react-native';
-import Colors from '../res/Colors';
-import Http from '../libs/http';
-import Storage from '../libs/storage';
+import Colors from '../../res/Colors';
+import Http from '../../libs/http';
+import Storage from '../../libs/storage';
 import BadgesItem from './BadgesItem';
 import BadgesSearch from './BadgesSearch';
 
