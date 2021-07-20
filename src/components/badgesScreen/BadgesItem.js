@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Pressable,
 } from 'react-native';
-import Colors from '../res/Colors';
+import Colors from '../../res/Colors';
 
 class BadgesItem extends React.Component {
   render() {
