@@ -6,9 +6,9 @@ import {
   ActivityIndicator,
   FlatList,
 } from 'react-native';
-import Colors from '../res/Colors';
-import Storage from '../libs/storage';
-import BadgesItem from '../badgesScreen/BadgesItem';
+import Colors from '../../res/Colors';
+import Storage from '../../libs/storage';
+import BadgesItem from '../BadgesScreen/BadgesItem';
 import Loader from '../Generics/Loader';
 
 class Favorites extends React.Component {
