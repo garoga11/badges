@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, ActivityIndicator, StatusBar, StyleSheet} from 'react-native';
 
-import Colors from '../res/Colors';
+import Colors from '../../res/Colors';
 
 const Loader = () => {
   return (
