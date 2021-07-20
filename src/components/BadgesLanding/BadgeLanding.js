@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-import Colors from '../res/Colors';
+import Colors from '../../res/Colors';
 
 const imageBackground = {
   uri: 'https://images.pexels.com/photos/4337031/pexels-photo-4337031.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
