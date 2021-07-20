@@ -1,6 +1,6 @@
 import React from 'react';
 import {TextInput, View, StyleSheet} from 'react-native';
-import Colors from '../res/Colors';
+import Colors from '../../res/Colors';
 
 class BadgesSearch extends React.Component {
   state = {
