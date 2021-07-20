@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import Colors from '../res/Colors';
-import Storage from '../libs/storage';
+import Colors from '../../res/Colors';
+import Storage from '../../libs/storage';
 
 class BadgesDetail extends React.Component {
   state = {
