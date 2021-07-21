@@ -1,4 +1,3 @@
-
 import Storage from './storage';
 
 class UserSession {
@@ -12,15 +11,18 @@ class UserSession {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Accept: 'application/json',
           },
           body: JSON.stringify(body),
-        },
+        }
       );
-      let response = request.json();
-      let key = `token-${response.user.username}`;
-      await Storage.instance.store(key, response.token);
-      return response.user.username;
+      let response = await request.json();
+      try {
+        let key = `token-${response.user.username}`;
+        await Storage.instance.store(key, response.token);
+        return response.user.username;
+      } catch (err) {
+        return response;
+      }
     } catch (err) {
       console.log('Login error', err);
       throw Error(err);
@@ -39,7 +41,7 @@ class UserSession {
 
   signup = async body => {
     try {
-      await fetch(`https://django-backend-grg.herokuapp.com/users/signup/`, {
+      let request = await fetch(`https://django-backend-grg.herokuapp.com/users/signup/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,6 +49,12 @@ class UserSession {
         },
         body: JSON.stringify(body),
       });
+      let response = await request.json();
+      if (typeof response.username == 'string') {
+        return response.username;
+      } else {
+        return response;
+      }
     } catch (err) {
       console.log('signup err', err);
       throw Error(err);
