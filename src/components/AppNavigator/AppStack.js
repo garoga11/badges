@@ -1,7 +1,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import BadgesTabNavigator from '../BadgesScreen/BadgesTabNavigator';
-import Login from '../UsersScreen/login'
+import Login from '../UsersScreen/Login'
 import Colors from '../../res/Colors';
 import Signup from '../UsersScreen/Signup';
 
