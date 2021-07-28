@@ -7,8 +7,12 @@ class BadgesSearch extends React.Component {
     query: '',
   };
 
+  //We send the text on the search bar
+
   handleText = query => {
+    //we save the text we are going to search for in query
     this.setState({query});
+    //if the text changed we send the text to the query again
     if (this.props.onChange) {
       this.props.onChange(query);
     }

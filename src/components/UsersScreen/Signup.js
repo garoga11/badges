@@ -28,11 +28,16 @@ class Signup extends React.Component {
     form: {},
   };
 
+  //handleSubmit sends the form info in order to verify it and get a response
+
   handleSubmit = async () => {
     try {
+      //We set the userr as undefined and loading as true
       this.setState({loading: true, user: undefined});
+      //We send the form to signup
       let response = await UserSession.instance.signup(this.state.form);
       
+       //if we get an object as response we show the error
       if (typeof response == 'object') {
         let errors = [];
         let cont = 0;
@@ -50,13 +55,16 @@ class Signup extends React.Component {
           );
           cont++;
         }
+        //we save the errors in errors to show them
         this.setState({loading: false, user: undefined, errors: errors});
       } else {
+        //if we did not have errors we save the user data
         this.setState({
           loading: false,
           user: response,
           errors: [],
         });
+        //we send the user to login
         if (this.state.user) {
           this.props.navigation.navigate('Login');
         }
@@ -67,6 +75,8 @@ class Signup extends React.Component {
     }
   };
 
+  //We show the password depending if the user click on the eye image
+
   ToggleisPasswordVisible = () => {
     if (this.state.isPasswordVisible) {
       this.setState({isPasswordVisible: false});
@@ -74,6 +84,8 @@ class Signup extends React.Component {
       this.setState({isPasswordVisible: true});
     }
   };
+
+  //We show the password confirmation depending if the user click on the eye image
 
   ToggleisPasswordConfVisible = () => {
     if (this.state.isPasswordConfVisible) {

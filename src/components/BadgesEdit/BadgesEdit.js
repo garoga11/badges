@@ -19,18 +19,29 @@ class BadgesEdit extends React.Component {
     form: {},
   };
 
+  //To start the action we call getBadge.
+
   componentDidMount() {
     this.getBadge();
   }
 
+  //We get the badge info
+
   getBadge = () => {
+    //we get all the data 
     const {item} = this.props.route.params;
+    //we send the item(contains the badge's data) to the badge in the state
     this.setState({badge: item});
+    //we show the name in the upper part of the screen
     this.props.navigation.setOptions({title: `${item.name}`});
   };
 
+  //We send the data alreaddy edited 
+
   handleSubmit = async () => {
+    //We save the data already edited with the id and the information on the form that is in state
     await Http.instance.put(this.state.badge._id, this.state.form);
+    //Once the action is done we sent the user to home
     this.props.navigation.replace('Badges');
   };
 

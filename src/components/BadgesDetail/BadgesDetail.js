@@ -9,22 +9,34 @@ class BadgesDetail extends React.Component {
     isFavorite: false,
   };
 
+  //To start the action we call getBadge.
+
   componentDidMount() {
     this.getBadge();
   }
 
+  //We get the badge info
+
   getBadge = () => {
     const {item} = this.props.route.params;
+    //we send the item(contains the badge's data) to the badge in the state
     this.setState({badge: item}, () => {
+      //we call to getFavorite  to know in  which way show the heart
       this.getFavorite();
     });
+    //we show the name in the upper part of the screen
     this.props.navigation.setOptions({title: item.name});
   };
 
+//getFavorite gets the id of the badge
+
   getFavorite = async () => {
     try {
+      //we get the id from the badge info that is in badge state
       const key = `favorite-${this.state.badge._id}`;
+      //We get the key from the storage
       const favoriteStr = await Storage.instance.get(key);
+      //if the data is not null we set the state to true
       if (favoriteStr != null) {
         this.setState({isFavorite: true});
       }
@@ -33,7 +45,10 @@ class BadgesDetail extends React.Component {
     }
   };
 
+// we defined the state by using the heart button
+
   toggleFavorite = () => {
+    //depending of the state (true or false) we add or remove the badge to favorites
     if (this.state.isFavorite) {
       this.removeFavorite();
     } else {
@@ -41,20 +56,29 @@ class BadgesDetail extends React.Component {
     }
   };
 
+//addFavorite adds a user to the favorite section
+
   addFavorite = async () => {
+    //we get the badge data that is saved in the badge state
     const badge = JSON.stringify(this.state.badge);
+    //we save the user's id that we get from de db
     const key = `favorite-${this.state.badge._id}`;
-
+    //We save the id and the badge so the badge will appear in the favorite section
     const stored = await Storage.instance.store(key, badge);
-
+    //finally, if the badge is stored we change the state to true because it is a favorite now
     if (stored) {
       this.setState({isFavorite: true});
     }
   };
 
+//  Next event deletes a user from favorite section 
+
   removeFavorite = async () => {
+    //First we save the user's id that we get from de db
     const key = `favorite-${this.state.badge._id}`;
+    //Using "remove" we delete that user with the id we previously got
     await Storage.instance.remove(key);
+    //finally we change the state to false because it is not a favorite anymore
     this.setState({isFavorite: false});
   };
 

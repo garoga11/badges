@@ -14,6 +14,8 @@ const imageBackground = {
 };
 
 class BadgeLanding extends React.Component {
+
+  //We sshow the menu(home, favorites and profile)
  handlePress = () => {
     this.props.navigation.replace('BadgesTabNavigator');
   };

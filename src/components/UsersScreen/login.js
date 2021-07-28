@@ -27,11 +27,17 @@ class Login extends React.Component {
     form: {},
   };
 
+  //handleSubmit sends the data to the db to verify if everything is correct, if yes, 
+  //the user will be redirected to home, otherwise, the user will see the error in the screen
+
   handleSubmit = async () => {
     try {
+      //we set the loading true because wee are consulting the db, we don't have erros yet and the user is undefined.
       this.setState({loading: true, error: null, user: undefined});
+      //We send the data of the user to verify it
       let response = await UserSession.instance.login(this.state.form);
 
+      //if we get an object as response we show the error
       if (typeof response == 'object') {
         console.log(response)
         if (response['405']) {
@@ -41,15 +47,19 @@ class Login extends React.Component {
         }
         this.setState({loading: false, error: message, user: undefined});
       } else {
+        //If the response is not an object we got the user
         this.setState({loading: false, error: null, user: response});
       }
     } catch (err) {
       this.setState({loading: false, error: err});
     }
+    //we send the userr to home
     if (this.state.user) {
       this.props.navigation.replace('BadgesTabNavigator');
     }
   };
+
+  //We show the password depending if the user click on the eye image
 
     toggleisPasswordVisible = () => {
     if (this.state.isPasswordVisible) {
@@ -58,6 +68,8 @@ class Login extends React.Component {
       this.setState({isPasswordVisible: true});
     }
   };
+
+  //We redirect to the user to signup screen
 
   handleSignup = () => {
     this.props.navigation.navigate('Signup');
