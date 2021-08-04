@@ -31,6 +31,16 @@ class Storage {
     }
   };
 
+  multiRemove = async keys =>{
+    try{
+      await AsyncStorage.multiRemove(keys)
+      return true
+    }catch(err){
+      console.log('Multi remove err', err)
+      return false
+    }
+  }
+
   getAllKeys = async () => {
     try {
       return await AsyncStorage.getAllKeys();

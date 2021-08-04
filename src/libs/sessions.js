@@ -13,13 +13,15 @@ class UserSession {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(body),
-        }
+        },
       );
       let response = await request.json();
       try {
         let key = `token-${response.user.username}`;
         await Storage.instance.store(key, response.token);
-        return response.user.username;
+        key = `id-${response.user.username}`;
+        await Storage.instance.store(key, JSON.stringify(response.user));
+        return true;
       } catch (err) {
         return response;
       }
@@ -29,9 +31,19 @@ class UserSession {
     }
   };
 
-  logout = async key => {
+  logout = async () => {
     try {
-      await Storage.instances.remove(key);
+      const allkeys = await Storage.instance.getAllKeys();
+      console.log(allkeys)
+
+      const tokens = allkeys.filter(key => key.includes('token-'));
+      await Storage.instance.multiRemove(tokens);
+
+      const ids = allkeys.filter(key => key.includes('id-'));
+      await Storage.instance.multiRemove(ids);
+
+      console.log(allkeys);
+
       return true;
     } catch (err) {
       console.log('logout err', err);
@@ -41,14 +53,17 @@ class UserSession {
 
   signup = async body => {
     try {
-      let request = await fetch(`https://django-backend-grg.herokuapp.com/users/signup/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
+      let request = await fetch(
+        `https://django-backend-grg.herokuapp.com/users/signup/`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify(body),
         },
-        body: JSON.stringify(body),
-      });
+      );
       let response = await request.json();
       if (typeof response.username == 'string') {
         return response.username;
@@ -61,8 +76,21 @@ class UserSession {
     }
   };
 
-  getToken = async key => {
+  getUser = async () => {
     try {
+      const allKeys = await Storage.instance.getAllKeys();
+      const data = allKeys.filter(key => key.includes('id-'));
+      const user = await Storage.instance.get(data.toString());
+      //console.log(JSON.parse(user));
+      return JSON.parse(user);
+    } catch (err) {
+      console.log('Get user err', err);
+    }
+  };
+
+  getToken = async username => {
+    try {
+      const key = `token-${username}`;
       return await Storage.instance.get(key);
     } catch (err) {
       console.log('Get token error', err);

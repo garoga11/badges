@@ -24,6 +24,11 @@ const UserStack = () => {
                 component={Profile}
                 options={{headerShown: false}}
             />
+            {/* <Stack.Screen 
+                name="ProfileEdit"
+                component={ProfileEdit}
+                options={{headerShown: false}}
+            /> */}
 
         </Stack.Navigator>
     )
