@@ -155,12 +155,7 @@ class Signup extends React.Component {
                   />
                   <TouchableOpacity onPress={this.ToggleisPasswordVisible}>
                     <Image
-                      style={{
-                        marginLeft: 130,
-                        marginTop: -60,
-                        width: 15,
-                        height: 10,
-                      }}
+                      style={styles2.password}
                       source={
                         isPasswordVisible
                           ? require('../../assets/no-ver.png')
@@ -183,12 +178,7 @@ class Signup extends React.Component {
                   />
                   <TouchableOpacity onPress={this.ToggleisPasswordConfVisible}>
                     <Image
-                      style={{
-                        marginLeft: 130,
-                        marginTop: -60,
-                        width: 15,
-                        height: 10,
-                      }}
+                      style={styles2.password}
                       source={
                         isPasswordConfVisible
                           ? require('../../assets/no-ver.png')
@@ -229,38 +219,13 @@ const styles2 = StyleSheet.create({
     paddingBottom: 130,
     marginBottom: -1,
   },
-
-  logoContainer: {
-    alignSelf: 'center',
-    marginTop: -100,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.5,
-    shadowRadius: 12.0,
-    elevation: 20,
-
-    backgroundColor: Colors.white,
-
-    width: 110,
-    height: 110,
-    resizeMode: 'cover',
-    borderRadius: 90,
-    position: 'absolute',
-
-    zIndex: 2,
+  password:{
+    //marginLeft: 130,
+    //marginTop: -30,
+    width: 15,
+    height: 10,
   },
 
-  logo: {
-    width: 145,
-    height: 105,
-    justifyContent: 'center',
-    alignSelf: 'center',
-
-    zIndex: 2,
-  },
 
   layerColor: {
     flex: 2,
@@ -322,14 +287,13 @@ const styles2 = StyleSheet.create({
     borderBottomColor: Colors.charade,
     borderBottomWidth: 1,
     marginBottom: 30,
-    width: 150,
     textAlign: 'center',
   },
 
   buttonDark: {
     width: 193,
     padding: 15,
-    marginTop: 350,
+    marginTop: 390,
     marginLeft: -20,
     // marginBottom: 0,
     backgroundColor: Colors.charade,
