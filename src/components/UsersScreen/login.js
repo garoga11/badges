@@ -21,47 +21,87 @@ const Background = {
 class Login extends React.Component {
   state = {
     loading: false,
-    error: null,
+    errors: [],
     user: undefined,
     isPasswordVisible: true,
     form: {},
   };
 
-  //handleSubmit sends the data to the db to verify if everything is correct, if yes, 
+  componentDidMount = () => {
+    this.deleteTokens();
+  };
+
+  deleteTokens = async () => {
+    await UserSession.instance.logout();
+  };
+
+  //handleSubmit sends the data to the db to verify if everything is correct, if yes,
   //the user will be redirected to home, otherwise, the user will see the error in the screen
 
   handleSubmit = async () => {
     try {
       //we set the loading true because wee are consulting the db, we don't have erros yet and the user is undefined.
-      this.setState({loading: true, error: null, user: undefined});
+      this.setState({loading: true, user: undefined});
       //We send the data of the user to verify it
       let response = await UserSession.instance.login(this.state.form);
 
       //if we get an object as response we show the error
+
       if (typeof response == 'object') {
+        let errors = [];
+        let cont = 0;
+
+        for (let error in response) {
+          let key = error;
+          if (response['405']) {
+            error = 'Your account is not verified';
+          } else {
+            error = 'Invalid username or password, try again';
+          }
+
+          errors.push(
+            <View key={cont}>
+              <Text>{`${error} : ${response[key][0]}`}</Text>
+            </View>,
+          );
+          cont++;
+        }
+        //we save the errors in errors to show them
+        this.setState({loading: false, user: undefined, errors: errors});
+      } else {
+        //if we did not have errors we save the user data
+        this.setState({
+          loading: false,
+          user: response,
+          errors: [],
+        });
+        //we send the userr to home
+        if (this.state.user) {
+          this.props.navigation.replace('BadgesTabNavigator');
+        }
+      }
+
+      /*       if (typeof response == 'object') {
         console.log(response)
         if (response['405']) {
-         var message = 'Your account is not verified';
-        }else {
+          var message = 'Your account is not verified';
+        } else {
           var message = 'Invalid username or password, try again';
         }
-        this.setState({loading: false, error: message, user: undefined});
+        this.setState({loading: false, errors: message, user: undefined});
       } else {
         //If the response is not an object we got the user
-        this.setState({loading: false, error: null, user: response});
-      }
+        this.setState({loading: false, errors:[], user: response});
+      } */
     } catch (err) {
-      this.setState({loading: false, error: err});
-    }
-    //we send the userr to home
-    if (this.state.user) {
-      this.props.navigation.replace('BadgesTabNavigator');
+      this.setState({loading: false, errors: err});
+      throw Error(err);
     }
   };
 
   //We show the password depending if the user click on the eye image
 
-    toggleisPasswordVisible = () => {
+  toggleisPasswordVisible = () => {
     if (this.state.isPasswordVisible) {
       this.setState({isPasswordVisible: false});
     } else {
@@ -76,7 +116,7 @@ class Login extends React.Component {
   };
 
   render() {
-    const {isPasswordVisible, loading, error, user} = this.state;
+    const {isPasswordVisible, loading, errors, user} = this.state;
     if (loading === true && !user) {
       return <Loader />;
     }
@@ -87,13 +127,9 @@ class Login extends React.Component {
           <ImageBackground source={Background} style={styles2.image}>
             <View style={styles2.layerColor}>
               <Text style={styles2.title}>Welcome</Text>
-              {error ? (
-                <View>
-                  <Text>
-                    {error}
-                  </Text>
-                </View>
-              ) : null}
+
+              {errors ? <View style={styles2.error}>{errors}</View> : null}
+
               <View style={styles2.login}>
                 <View style={styles2.inputContainer}>
                   <TextInput
@@ -122,14 +158,11 @@ class Login extends React.Component {
                     }}
                   />
                 </View>
-                <TouchableOpacity onPress={this.  toggleisPasswordVisible}>
+                <TouchableOpacity
+                  
+                  onPress={this.toggleisPasswordVisible}>
                   <Image
-                    style={{
-                      marginLeft: 130,
-                      marginTop: -30,
-                      width: 15,
-                      height: 10,
-                    }}
+                  style={styles2.password}
                     source={
                       isPasswordVisible
                         ? require('../../assets/no-ver.png')
@@ -164,9 +197,20 @@ const styles2 = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: Colors.white,
   },
+  password:{
+    //marginLeft: 130,
+    //marginTop: -30,
+    width: 15,
+    height: 10,
+  },
+  error: {
+    marginBottom: 40,
+    color: Colors.white,
 
+    fontSize: 12,
+    textAlign: 'center',
+  },
   image: {
     flex: 1,
     resizeMode: 'cover',
